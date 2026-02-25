@@ -10,3 +10,4 @@ pypdf
 numpy
 scikit-learn
 requests
+itsdangerous
