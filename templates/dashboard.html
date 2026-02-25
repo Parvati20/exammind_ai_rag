@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ExamMind AI | Smart Analyzer</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-area">🚀 ExamMind AI</div>
+        
+        <div class="history-section">
+            <p style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">Intelligence History</p>
+            <div class="history-item">Physics Trend Analysis 2024</div>
+            <div class="history-item">Chemistry Repeats Detector</div>
+            <div class="history-item">Maths Weightage Prediction</div>
+        </div>
+
+        <div class="user-profile-box">
+            {% if picture %}<img src="{{ picture }}" class="user-img">{% else %}<div class="user-img" style="background:var(--primary)"></div>{% endif %}
+            <div style="flex:1">
+                <span style="font-weight: 700; font-size: 0.9rem; display: block;">{{ name }}</span>
+                <a href="/logout" style="color: #ef4444; font-size: 0.75rem; text-decoration: none;">Log out</a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="welcome-banner">
+            <h2>Welcome back, <span>{{ name }}</span> 👋</h2>
+            <p style="color: var(--text-muted); margin-top: 8px;">Your personal AI assistant for smarter exam preparation.</p>
+        </div>
+
+        <section class="hero-title">
+            <h1>Smartly Prepare for Exams</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">AI-powered insights from 2020-2025 exam patterns.</p>
+        </section>
+
+        <form method="POST" action="/ask" class="search-container">
+            <input type="text" name="query" placeholder="E.g., 'Compare Physics 2022 vs 2024' or 'Organic Chemistry repeats'" required>
+            <button type="submit">Analyze</button>
+        </form>
+
+        {% if result %}
+        <div class="result-box">
+            <h3>✨ Intelligence Report Generated</h3>
+            <pre style="white-space: pre-wrap; line-height: 1.8; color: #cbd5e1; font-size: 1.05rem;">{{ result }}</pre>
+        </div>
+        {% endif %}
+
+        <div class="dashboard-grid">
+            <div class="tile-card">
+                <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">🔥 Hot Topics</h3>
+                <ul style="list-style: none;">
+                    {% for item in top_topics %}
+                    <li style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--glass-border);">
+                        <span>{{ item.topic }}</span>
+                        <span style="color: var(--primary); font-weight: 800;">{{ item.count }} mentions</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="tile-card">
+                <h3 style="margin-bottom: 20px;">📂 Custom PDF Upload</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Expand the AI's knowledge by uploading new subject PDFs.</p>
+                <form method="POST" action="/upload" enctype="multipart/form-data">
+                    <input type="file" name="pdf_file" required style="margin-bottom: 20px; display: block; width: 100%; color: var(--text-muted);">
+                    <button type="submit" style="width: 100%; background: white; color: black; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer;">Process Document</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

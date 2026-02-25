@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+python-dotenv
+authlib
+jinja2
+python-multipart
+faiss-cpu
+sentence-transformers
+pypdf
+numpy
+scikit-learn
+requests
