@@ -10,11 +10,8 @@
     <aside class="sidebar">
         <div class="logo-area">🚀 ExamMind AI</div>
         
-        <div class="history-section">
-            <p style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">Intelligence History</p>
-            <div class="history-item">Physics Trend Analysis 2024</div>
-            <div class="history-item">Chemistry Repeats Detector</div>
-            <div class="history-item">Maths Weightage Prediction</div>
+        <div class="history-section" id="historySection">
+        <p style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">Intelligence History</p>
         </div>
 
         <div class="user-profile-box">
@@ -33,14 +30,33 @@
         </div>
 
         <section class="hero-title">
-            <h1>Smartly Prepare for Exams</h1>
+            <h1>Smartly Prepare for JEE Exams</h1>
             <p style="color: var(--text-muted); font-size: 1.1rem;">AI-powered insights from 2020-2025 exam patterns.</p>
         </section>
 
-        <form method="POST" action="/ask" class="search-container">
-            <input type="text" name="query" placeholder="E.g., 'Compare Physics 2022 vs 2024' or 'Organic Chemistry repeats'" required>
+        <form method="POST" action="/ask" class="search-container" id="searchForm">
+            <input type="text" id="queryInput" name="query" placeholder="E.g., 'Compare Physics 2022 vs 2024' or 'Organic Chemistry repeats'" required>
             <button type="submit">Analyze</button>
         </form>
+
+        <div style="margin: 25px 0; text-align: center;">
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 12px;">💡 Quick Analysis Triggers:</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                <button type="button" onclick="quickSearch('List 5 repeated Physics numericals from 2021 to 2024')" style="background: rgba(162, 155, 254, 0.15); border: 1px solid #a29bfe; color: white; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: 0.3s;">🔥 Physics Repeats</button>
+                
+                <button type="button" onclick="quickSearch('Organic Chemistry weightage analysis for JEE 2024')" style="background: rgba(255, 118, 117, 0.15); border: 1px solid #ff7675; color: white; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem;">🧪 Chemistry Trends</button>
+                
+                <button type="button" onclick="quickSearch('Extract important questions on Calculus from 2023 Math paper')" style="background: rgba(84, 160, 255, 0.15); border: 1px solid #54a0ff; color: white; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem;">📐 Calculus Focus</button>
+                
+                <button type="button" onclick="quickSearch('Compare difficulty level of Inorganic Chemistry 2022 vs 2024')" style="background: rgba(29, 209, 161, 0.15); border: 1px solid #1dd1a1; color: white; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem;">📊 Difficulty Check</button>
+                
+                <button type="button" onclick="quickSearch('Most asked questions from Electromagnetism')" style="background: rgba(254, 202, 87, 0.15); border: 1px solid #feca57; color: white; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem;">⚡ Electromagnetism</button>
+                
+                <button type="button" onclick="quickSearch('What are the top 3 high-priority chapters for Physics?')" style="background: rgba(255, 159, 243, 0.15); border: 1px solid #ff9ff3; color: white; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem;">🎯 Priority Chapters</button>
+                
+                <button type="button" onclick="quickSearch('Identify concepts from 2020 Physical Chemistry paper')" style="background: rgba(72, 219, 251, 0.15); border: 1px solid #48dbfb; color: white; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem;">🧠 Concept Map</button>
+            </div>
+        </div>
 
         {% if result %}
         <div class="result-box">
@@ -61,17 +77,84 @@
                     {% endfor %}
                 </ul>
             </div>
-
-            <div class="tile-card">
-                <h3 style="margin-bottom: 20px;">📂 Custom PDF Upload</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Expand the AI's knowledge by uploading new subject PDFs.</p>
-                <form method="POST" action="/upload" enctype="multipart/form-data">
-                    <input type="file" name="pdf_file" required style="margin-bottom: 20px; display: block; width: 100%; color: var(--text-muted);">
-                    <button type="submit" style="width: 100%; background: white; color: black; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer;">Process Document</button>
-                </form>
-            </div>
+            <div class="tile-card" style="margin: 0; background: rgba(255, 255, 255, 0.03); border-left: 4px solid #ff9f43;">
+        <h3 style="margin-bottom: 15px; color: #ff9f43;"><i class="fas fa-lightbulb"></i> AI Exam Strategy</h3>
+        <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 15px;">Smart tips for {{ name }}:</p>
+        
+        <ul style="list-style: none; font-size: 0.9rem; color: #eee; display: flex; flex-direction: column; gap: 12px;">
+            <li style="display: flex; gap: 10px;">
+                <span>✅</span> 
+                <span>Physics numericals 2021-2024 patterns suggest focus on Formula Derivations.</span>
+            </li>
+            <li style="display: flex; gap: 10px;">
+                <span>✅</span> 
+                <span>Organic Chemistry weightage is rising; start your daily revision with Naming Reactions.</span>
+            </li>
+            <li style="display: flex; gap: 10px;">
+                <span>✅</span> 
+                <span>For Inorganic, 70% of questions directly follow the 2020-2022 conceptual depth.</span>
+            </li>
+        </ul>
+        
+        <div style="margin-top: 15px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 8px; text-align: center;">
+            <small style="color: #ff9f43; font-weight: bold;">💡 Quick Tip: Solve Math in the last 60 minutes.</small>
         </div>
+    </div>
+        </div>
+        
     </main>
+
+    <script>
+    // 1. Page load hote hi history dikhayein
+    document.addEventListener('DOMContentLoaded', () => {
+        displayHistory();
+    });
+
+    // 2. Form submit hone par history save karein
+    document.getElementById('searchForm').onsubmit = function() {
+        let query = document.getElementById('queryInput').value;
+        if(query.trim() !== "") {
+            let history = JSON.parse(localStorage.getItem('examHistory')) || [];
+            history = history.filter(item => item !== query); // Purana duplicate hatao
+            history.unshift(query); 
+            if(history.length > 5) history.pop(); // Top 5 rakhein
+            localStorage.setItem('examHistory', JSON.stringify(history));
+        }
+    };
+
+    // 3. History Sidebar update karne ka function
+    function displayHistory() {
+        const historyDiv = document.getElementById('historySection');
+        if (!historyDiv) return;
+
+        let history = JSON.parse(localStorage.getItem('examHistory')) || [];
+        let html = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <p style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin: 0;">Intelligence History</p>
+                ${history.length > 0 ? '<button onclick="clearAllHistory()" style="background:none; border:none; color:#ef4444; font-size:0.7rem; cursor:pointer;">Clear</button>' : ''}
+            </div>
+        `;
+
+        if (history.length > 0) {
+            history.forEach(item => {
+                html += `<div class="history-item" onclick="quickSearch('${item}')" style="cursor:pointer; margin-bottom:10px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 6px;">${item}</div>`;
+            });
+        } else {
+            html += '<div style="color:gray; font-size:0.8rem;">No recent history</div>';
+        }
+        historyDiv.innerHTML = html;
+    }
+
+    function clearAllHistory() {
+        localStorage.removeItem('examHistory');
+        displayHistory();
+    }
+
+    function quickSearch(text) {
+        document.getElementById('queryInput').value = text;
+        document.getElementById('searchForm').submit();
+    }
+</script>
 
 </body>
 </html>

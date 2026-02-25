@@ -25,7 +25,7 @@ for folder in ["static", "templates", "uploads", "vectorstore"]:
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# Import internal modules (Auth & Analytics load on startup)
+# Import internal modules
 from auth import init_oauth
 from analytics import get_top_topics
 oauth = init_oauth()
@@ -59,19 +59,21 @@ async def dashboard(request: Request):
     if not user:
         return RedirectResponse("/")
     
+    # Session se result uthao aur turant clear kar do taaki refresh pe gayab ho jaye
+    result = request.session.pop("last_result", None)
+    question = request.session.pop("last_question", None)
+    
     return templates.TemplateResponse("dashboard.html", {
         "request": request, 
         "name": user.get("name"), 
         "picture": user.get("picture"), 
         "top_topics": get_top_topics(),
-        "result": None,
-        "question": None
+        "result": result,
+        "question": question
     })
 
-@app.post("/ask", response_class=HTMLResponse)
+@app.post("/ask")
 async def ask(request: Request, query: str = Form(...)):
-    # LAZY LOADING: Model loads only when the first question is asked
-    # This prevents the server from crashing during startup
     from rag import ask_question 
     
     user = request.session.get("user")
@@ -80,18 +82,15 @@ async def ask(request: Request, query: str = Form(...)):
     
     response = ask_question(query)
     
-    return templates.TemplateResponse("dashboard.html", {
-        "request": request, 
-        "name": user.get("name"), 
-        "picture": user.get("picture"),
-        "top_topics": get_top_topics(),
-        "result": response["answer"], 
-        "question": query
-    })
+    # Result ko session mein temporarily save karo
+    request.session["last_result"] = response["answer"]
+    request.session["last_question"] = query
+    
+    # Answer dikhane ke liye dashboard par bhej do (Redirect)
+    return RedirectResponse("/dashboard", status_code=303)
 
 @app.post("/upload")
 async def upload_pdf(request: Request, pdf_file: UploadFile = File(...)):
-    # Lazy load ingestion
     from ingest import process_file
     
     if not request.session.get("user"):
@@ -109,6 +108,5 @@ async def logout(request: Request):
     request.session.clear()
     return RedirectResponse("/")
 
-# Professional Startup
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
